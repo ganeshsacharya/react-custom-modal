@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Released]
 
+## [1.1.2] - 2021-11-13
+### Fixed
+- Issue When importing ToastPosition enum
+
 ## [1.1.1] - 2021-10-17
 ### Fixed
 - Issue with z-index of toasts container

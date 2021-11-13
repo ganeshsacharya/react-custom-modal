@@ -2,7 +2,7 @@ import React from 'react';
 import {AnimationType, DialogType, OutAnimationType, PopupProvider, usePopup} from './lib'
 
 import './TestApp.css'
-import {ToastPosition} from "./lib/Toast";
+import {ToastPosition} from "./lib/index";
 
 const buttonStyles: React.CSSProperties = {
 	display: 'block',
@@ -39,10 +39,10 @@ const MyComponent = () => {
 		<>
 			<h2>Modal</h2>
 			<div className={'example-button'} style={buttonStyles}
-			     onClick={() => showModal(<TestComponent a={'test'}/>, {
-				     animationType: AnimationType.SLIDE_IN_UP,
-				     outAnimationType: OutAnimationType.SLIDE_OUT_UP
-			     })}>Modal
+				 onClick={() => showModal(<TestComponent a={'test'}/>, {
+					 animationType: AnimationType.SLIDE_IN_UP,
+					 outAnimationType: OutAnimationType.SLIDE_OUT_UP
+				 })}>Modal
 			</div>
 
 			<AlertConfigurator/>
@@ -114,7 +114,7 @@ const App = () => {
 
 const AlertConfigurator = () => {
 
-	const {showAlert, showOptionDialog, showInputDialog} = usePopup();
+	const {showAlert, showOptionDialog, showInputDialog, showToast} = usePopup();
 
 	return (
 		<>
@@ -135,18 +135,18 @@ const AlertConfigurator = () => {
 			})}>Warning Alert
 			</div>
 			<div className={'example-button'} style={buttonStyles}
-			     onClick={() => showAlert({
-				     type: DialogType.SUCCESS, text: 'Text',
-				     title: 'Title',
-			     })}>Success
+				 onClick={() => showAlert({
+					 type: DialogType.SUCCESS, text: 'Text',
+					 title: 'Title',
+				 })}>Success
 				Alert
 			</div>
 			<div className={'example-button'} style={buttonStyles}
-			     onClick={() => showAlert({
-				     type: DialogType.INFO, text: 'Text',
-				     title: 'Title',
-				     allowOutsideClick: false
-			     })}>Info Alert
+				 onClick={() => showAlert({
+					 type: DialogType.INFO, text: 'Text',
+					 title: 'Title',
+					 allowOutsideClick: false
+				 })}>Info Alert
 			</div>
 			<div className={'example-button'} style={buttonStyles} onClick={() => showAlert({
 				type: DialogType.WARNING,
@@ -172,6 +172,23 @@ const AlertConfigurator = () => {
 					style: {background: 'lightgreen'}
 				}],
 			})}>Option
+				Dialog
+			</div>
+
+			<div className={'example-button'} style={buttonStyles} onClick={() => showOptionDialog({
+				containerStyle: {width: 350},
+				text: 'Are you sure you want to delete this user? You won\'t be able to revert that action.',
+				title: 'Delete User?',
+				options: [{
+					name: 'Cancel',
+					type: 'cancel',
+				}, {
+					name: 'Delete',
+					type: 'confirm',
+					style: {background: 'lightcoral'}
+				}],
+				onConfirm: () => showToast({ type: DialogType.SUCCESS, text: 'User Deleted', timeoutDuration: 3000, showProgress: true }),
+			})}>Confirmation
 				Dialog
 			</div>
 			<div className={'example-button'} style={buttonStyles} onClick={() => showInputDialog({
@@ -200,7 +217,12 @@ const AlertConfigurator = () => {
 							}
 						}
 					},
-					{inputType: 'text', name: 'lname', label: 'Last Name', validation: {required: {value: true, message: 'Value is required'}}},
+					{
+						inputType: 'text',
+						name: 'lname',
+						label: 'Last Name',
+						validation: {required: {value: true, message: 'Value is required'}}
+					},
 					{inputType: 'text', name: 'address', label: 'Address', validation: {required: {value: true}}},
 					{inputType: 'text', name: 'zip', label: 'Zip', validation: {required: {value: true}}},
 					{inputType: 'number', name: 'age', label: 'Age', validation: {min: {value: 5}}},
@@ -260,7 +282,7 @@ const AlertConfigurator = () => {
 			</div>
 		</>
 	)
-}
+};
 
 export const Setup = () => {
 	return (

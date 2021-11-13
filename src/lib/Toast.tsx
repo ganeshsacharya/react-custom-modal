@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {AnimationType, IToast, ToastOptions} from "./index";
+import {AnimationType, IToast, ToastOptions, ToastPosition} from "./index";
 import {closeIcon, iconIllustrationTypes} from "./SvgIcons";
 import ToastProgress from "./ToastProgress";
 
@@ -7,17 +7,6 @@ interface IToasts {
 	toasts?: Array<IToast>;
 	hideToast: (toastId: string) => void;
 }
-
-export enum ToastPosition {
-	TOP_RIGHT = 'top-right',
-	TOP_LEFT = 'top-left',
-	TOP_CENTER = 'top-center',
-	BOTTOM_RIGHT = 'bottom-right',
-	BOTTOM_CENTER = 'bottom-center',
-	BOTTOM_LEFT = 'bottom-left',
-}
-
-export const DefaultToastPosition = ToastPosition.BOTTOM_RIGHT;
 
 export default function Toast({toasts, hideToast}: IToasts) {
 

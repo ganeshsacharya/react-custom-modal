@@ -5,7 +5,6 @@ import React, {
 } from "react";
 import {ModalRoot} from "./component";
 import Dialog from "./Dialog";
-import {DefaultToastPosition, ToastPosition} from "./Toast";
 
 export enum AnimationType {
 	FADE_IN = 'fadeIn',
@@ -154,6 +153,17 @@ export interface ToastOptions {
 	progressColor?: string;
 }
 
+export enum ToastPosition {
+	TOP_RIGHT = 'top-right',
+	TOP_LEFT = 'top-left',
+	TOP_CENTER = 'top-center',
+	BOTTOM_RIGHT = 'bottom-right',
+	BOTTOM_CENTER = 'bottom-center',
+	BOTTOM_LEFT = 'bottom-left',
+}
+
+export const DefaultToastPosition = ToastPosition.BOTTOM_RIGHT;
+
 export type IToast = ToastOptions & { id: string };
 
 export interface ModalOptions {
@@ -267,7 +277,11 @@ const PopupProvider = ({children}: { children: any }) => {
 		showToast: (options: ToastOptions) => {
 			dispatch({
 				type: 'showToast',
-				toast: {...options, position: options.position || DefaultToastPosition, id: Math.random().toString(36).substring(7)},
+				toast: {
+					...options,
+					position: options.position || DefaultToastPosition,
+					id: Math.random().toString(36).substring(7)
+				},
 				componentProps: {...options}
 			})
 		},
