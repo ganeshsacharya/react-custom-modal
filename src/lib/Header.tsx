@@ -1,6 +1,6 @@
 import React from 'react';
-import {closeIcon, iconIllustrationTypes} from "./SvgIcons";
-import {DialogType} from "./index";
+import { closeIcon, iconIllustrationTypes } from "./SvgIcons";
+import { DialogType } from "./index";
 
 interface IProps {
     showCloseButton: boolean;
@@ -9,18 +9,19 @@ interface IProps {
     title: string;
     headerTextStyle?: React.CSSProperties;
     headerStyle?: React.CSSProperties;
+    customIcon?: () => JSX.Element;
 }
 
-const Header = ({showCloseButton, type, hideModal, title, headerTextStyle, headerStyle}: IProps) => {
+const Header = ({ showCloseButton, type, hideModal, title, headerTextStyle, headerStyle, customIcon }: IProps) => {
 
     return (
-        <div className={`react-custom-header react-custom-header-${type}`} style={{...headerStyle}}>
-            {iconIllustrationTypes[type]}
+        <div className={`react-custom-header react-custom-header-${type}`} style={{ ...headerStyle }}>
+            {customIcon ? customIcon() : iconIllustrationTypes[type]}
             {showCloseButton && (
-                <div style={{position: 'absolute', right: 20, cursor: 'pointer'}}
-                     onClick={hideModal}>{closeIcon()}</div>
+                <div style={{ position: 'absolute', right: 20, cursor: 'pointer' }}
+                    onClick={hideModal}>{closeIcon()}</div>
             )}
-            <div className={`react-custom-title ${iconIllustrationTypes[type] ? 'react-custom-title-margin' : ''}`} style={{...headerTextStyle}}>{title}</div>
+            <div className={`react-custom-title ${iconIllustrationTypes[type] ? 'react-custom-title-margin' : ''}`} style={{ ...headerTextStyle }}>{title}</div>
         </div>
     )
 

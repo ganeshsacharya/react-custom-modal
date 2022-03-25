@@ -1,6 +1,6 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {AnimationType, IToast, ToastOptions, ToastPosition} from "./index";
-import {closeIcon, iconIllustrationTypes} from "./SvgIcons";
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { AnimationType, IToast, ToastOptions, ToastPosition } from "./index";
+import { closeIcon, iconIllustrationTypes } from "./SvgIcons";
 import ToastProgress from "./ToastProgress";
 
 interface IToasts {
@@ -8,27 +8,27 @@ interface IToasts {
 	hideToast: (toastId: string) => void;
 }
 
-export default function Toast({toasts, hideToast}: IToasts) {
+export default function Toast({ toasts, hideToast }: IToasts) {
 
 	return (
 		<>
 			<div className={`react-custom-toast-container react-custom-toast-${ToastPosition.BOTTOM_LEFT}`}>
-				{toasts && toasts.filter(t => t.position === ToastPosition.BOTTOM_LEFT).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
+				{toasts && toasts.filter(t => t.position === ToastPosition.BOTTOM_LEFT).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast} />)}
 			</div>
 			<div className={`react-custom-toast-container react-custom-toast-${ToastPosition.BOTTOM_CENTER}`}>
-				{toasts && toasts.filter(t => t.position === ToastPosition.BOTTOM_CENTER).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
+				{toasts && toasts.filter(t => t.position === ToastPosition.BOTTOM_CENTER).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast} />)}
 			</div>
 			<div className={`react-custom-toast-container react-custom-toast-${ToastPosition.BOTTOM_RIGHT}`}>
-				{toasts && toasts.filter(t => t.position === ToastPosition.BOTTOM_RIGHT).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
+				{toasts && toasts.filter(t => t.position === ToastPosition.BOTTOM_RIGHT).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast} />)}
 			</div>
 			<div className={`react-custom-toast-container react-custom-toast-${ToastPosition.TOP_LEFT}`}>
-				{toasts && toasts.filter(t => t.position === ToastPosition.TOP_LEFT).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
+				{toasts && toasts.filter(t => t.position === ToastPosition.TOP_LEFT).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast} />)}
 			</div>
 			<div className={`react-custom-toast-container react-custom-toast-${ToastPosition.TOP_RIGHT}`}>
-				{toasts && toasts.filter(t => t.position === ToastPosition.TOP_RIGHT).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
+				{toasts && toasts.filter(t => t.position === ToastPosition.TOP_RIGHT).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast} />)}
 			</div>
 			<div className={`react-custom-toast-container react-custom-toast-${ToastPosition.TOP_CENTER}`}>
-				{toasts && toasts.filter(t => t.position === ToastPosition.TOP_CENTER).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast}/>)}
+				{toasts && toasts.filter(t => t.position === ToastPosition.TOP_CENTER).map(toast => <ToastItem key={toast.id} toast={toast} hideToast={hideToast} />)}
 			</div>
 		</>
 	)
@@ -41,16 +41,15 @@ interface IProps {
 	hideToast: (toastId: string) => void;
 }
 
-function ToastItem({toast, hideToast}: IProps) {
+function ToastItem({ toast, hideToast }: IProps) {
 
 	const [toastData, setToast] = useState<ToastOptions | null>(null);
 
-	const [animation, setAnimation] = useState<{ in: string, out: string }>({in: '', out: ''});
+	const [animation, setAnimation] = useState<{ in: string, out: string }>({ in: '', out: '' });
 
 	let timeout = useRef<NodeJS.Timeout | undefined>();
 
 	const hideMe = useCallback(() => {
-		console.log('trying to hide')
 		const outAnimation = {
 			[ToastPosition.TOP_RIGHT]: 'slideOutRight',
 			[ToastPosition.TOP_CENTER]: 'slideOutUp',
@@ -59,7 +58,7 @@ function ToastItem({toast, hideToast}: IProps) {
 			[ToastPosition.BOTTOM_LEFT]: 'slideOutLeft',
 			[ToastPosition.BOTTOM_CENTER]: 'slideOutDown',
 		}
-		setAnimation({out: `animate__animated animate__${outAnimation[toast.position!]} animate__faster`, in: ''})
+		setAnimation({ out: `animate__animated animate__${outAnimation[toast.position!]} animate__faster`, in: '' })
 	}, [toast.position]);
 
 	const showMe = useCallback(() => {
@@ -71,7 +70,7 @@ function ToastItem({toast, hideToast}: IProps) {
 			[ToastPosition.BOTTOM_LEFT]: 'slideInLeft',
 			[ToastPosition.BOTTOM_CENTER]: 'slideInUp',
 		}
-		setAnimation({in: `animate__animated animate__${inAnimation[toast.position!]} animate__faster`, out: ''})
+		setAnimation({ in: `animate__animated animate__${inAnimation[toast.position!]} animate__faster`, out: '' })
 	}, [toast.position]);
 
 	useEffect(() => {
@@ -110,7 +109,7 @@ function ToastItem({toast, hideToast}: IProps) {
 
 	return (
 		<div className={`react-custom-toast-${toastData.type} react-custom-toast ${animation.in} ${animation.out}`}
-		     style={{...toast.containerStyle}}>
+			style={{ ...toast.containerStyle }}>
 			<div style={{
 				width: '90%',
 				display: 'flex',
@@ -120,17 +119,17 @@ function ToastItem({toast, hideToast}: IProps) {
 				{toast.customComponent || (
 					<>
 						<div>
-							{iconIllustrationTypes[toastData.type]}
+							{toast.customIcon ? toast.customIcon() : iconIllustrationTypes[toastData.type]}
 						</div>
-						<div className={'react-custom-toast-text'} style={{...toast.textStyle}}>
+						<div className={'react-custom-toast-text'} style={{ ...toast.textStyle }}>
 							{toastData.text}
 						</div>
 					</>
 				)}
 			</div>
-			<div style={{width: "10%", cursor: 'pointer'}}
-			     onClick={hideMe}>{closeIcon()}</div>
-			{toast.timeoutDuration && toast.showProgress && toastData && <ToastProgress color={toast.progressColor} timeout={toast.timeoutDuration}/>}
+			<div className={'close-button'} style={{ width: "10%", cursor: 'pointer' }}
+				onClick={hideMe}>{closeIcon()}</div>
+			{toast.timeoutDuration && toast.showProgress && toastData && <ToastProgress color={toast.progressColor} timeout={toast.timeoutDuration} />}
 		</div>
 	)
 

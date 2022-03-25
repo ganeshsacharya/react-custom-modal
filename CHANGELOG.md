@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Released]
 
+## [1.2.0] - 2022-03-25
+### Changed
+- Added option to pass custom icon
+- Added option to allow/disallow closing of dialogs on ESC key press
+- Updated dependencies
+- Resolved all packages vulnerabilities
+- Unit Tests using Jest
+
 ## [1.1.3] - 2021-12-04
 ### Changed
 - Updated react, react-dom peer dependencies

@@ -1,8 +1,8 @@
 import React from 'react';
-import {AnimationType, DialogType, OutAnimationType, PopupProvider, usePopup} from './lib'
+import { AnimationType, DialogType, OutAnimationType, PopupProvider, usePopup } from './lib'
 
 import './TestApp.css'
-import {ToastPosition} from "./lib/index";
+import { ToastPosition } from "./lib/index";
 
 const buttonStyles: React.CSSProperties = {
 	display: 'block',
@@ -12,10 +12,10 @@ const buttonStyles: React.CSSProperties = {
 const TestComponent = (props: { a: string }) => {
 
 	return (
-		<div style={{background: 'white', borderRadius: 5, width: 500, padding: 20}}>
+		<div style={{ background: 'white', borderRadius: 5, width: 500, padding: 20 }}>
 			<h4> Fantasy T-shirt</h4>
 			<label className={"text-muted"}>Shirts</label>
-			<h3 className={"mt-3"} style={{fontWeight: 600, fontSize: "20px"}}>
+			<h3 className={"mt-3"} style={{ fontWeight: 600, fontSize: "20px" }}>
 				$39.99
 			</h3>
 			<p className={"mt-3"}>
@@ -33,19 +33,20 @@ const TestComponent = (props: { a: string }) => {
 
 const MyComponent = () => {
 
-	const {showModal, showToast} = usePopup();
+	const { showModal, showToast } = usePopup();
 
 	return (
 		<>
 			<h2>Modal</h2>
 			<div className={'example-button'} style={buttonStyles}
-				 onClick={() => showModal(<TestComponent a={'test'}/>, {
-					 animationType: AnimationType.SLIDE_IN_UP,
-					 outAnimationType: OutAnimationType.SLIDE_OUT_UP
-				 })}>Modal
+				onClick={() => showModal(<TestComponent a={'test'} />, {
+					animationType: AnimationType.SLIDE_IN_UP,
+					outAnimationType: OutAnimationType.SLIDE_OUT_UP,
+					allowCloseOnEscKey: true
+				})}>Modal
 			</div>
 
-			<AlertConfigurator/>
+			<AlertConfigurator />
 
 			<h2>Toast</h2>
 
@@ -98,7 +99,7 @@ const MyComponent = () => {
 				timeoutDuration: 10000,
 				showProgress: true,
 				progressColor: 'white',
-				containerStyle: {background: 'darkgray'}
+				containerStyle: { background: 'darkgray' }
 			})}>Toast Top Center
 			</div>
 
@@ -108,13 +109,15 @@ const MyComponent = () => {
 
 const App = () => {
 	return (
-		<MyComponent/>
+		<MyComponent />
 	)
 }
 
+const MyDangerIcon = () => <div style={{ height: 30, width: 30, borderRadius: 15, background: 'white' }}></div>;
+
 const AlertConfigurator = () => {
 
-	const {showAlert, showOptionDialog, showInputDialog, showToast} = usePopup();
+	const { showAlert, showOptionDialog, showInputDialog, showToast } = usePopup();
 
 	return (
 		<>
@@ -124,7 +127,8 @@ const AlertConfigurator = () => {
 				text: 'Text',
 				title: 'Title',
 				animationType: AnimationType.FADE_IN,
-				outAnimationType: OutAnimationType.FADE_OUT
+				outAnimationType: OutAnimationType.FADE_OUT,
+				customIcon: MyDangerIcon
 			})}>Danger Alert
 			</div>
 			<div className={'example-button'} style={buttonStyles} onClick={() => showAlert({
@@ -135,25 +139,25 @@ const AlertConfigurator = () => {
 			})}>Warning Alert
 			</div>
 			<div className={'example-button'} style={buttonStyles}
-				 onClick={() => showAlert({
-					 type: DialogType.SUCCESS, text: 'Text',
-					 title: 'Title',
-				 })}>Success
+				onClick={() => showAlert({
+					type: DialogType.SUCCESS, text: 'Text',
+					title: 'Title',
+				})}>Success
 				Alert
 			</div>
 			<div className={'example-button'} style={buttonStyles}
-				 onClick={() => showAlert({
-					 type: DialogType.INFO, text: 'Text',
-					 title: 'Title',
-					 allowOutsideClick: false
-				 })}>Info Alert
+				onClick={() => showAlert({
+					type: DialogType.INFO, text: 'Text',
+					title: 'Title',
+					allowOutsideClick: false
+				})}>Info Alert
 			</div>
 			<div className={'example-button'} style={buttonStyles} onClick={() => showAlert({
 				type: DialogType.WARNING,
 				text: 'Text',
 				title: 'Title',
 				animationType: AnimationType.FADE_IN,
-				bodyComponent: <TestComponent a={'a'}/>
+				bodyComponent: <TestComponent a={'a'} />
 			})}>Custom Content Alert
 			</div>
 			<div className={'example-button'} style={buttonStyles} onClick={() => showOptionDialog({
@@ -162,21 +166,21 @@ const AlertConfigurator = () => {
 				options: [{
 					name: 'No Thanks!',
 					type: 'cancel',
-					style: {background: 'lightcoral'}
+					style: { background: 'lightcoral' }
 				}, {
 					name: 'Cancel',
 					type: 'cancel',
 				}, {
 					name: 'Confirm',
 					type: 'confirm',
-					style: {background: 'lightgreen'}
+					style: { background: 'lightgreen' }
 				}],
 			})}>Option
 				Dialog
 			</div>
 
 			<div className={'example-button'} style={buttonStyles} onClick={() => showOptionDialog({
-				containerStyle: {width: 350},
+				containerStyle: { width: 350 },
 				text: 'Are you sure you want to delete this user? You won\'t be able to revert that action.',
 				title: 'Delete User?',
 				options: [{
@@ -185,7 +189,7 @@ const AlertConfigurator = () => {
 				}, {
 					name: 'Delete',
 					type: 'confirm',
-					style: {background: 'lightcoral'}
+					style: { background: 'lightcoral' }
 				}],
 				onConfirm: () => showToast({ type: DialogType.SUCCESS, text: 'User Deleted', timeoutDuration: 3000, showProgress: true }),
 			})}>Confirmation
@@ -194,20 +198,20 @@ const AlertConfigurator = () => {
 			<div className={'example-button'} style={buttonStyles} onClick={() => showInputDialog({
 				title: 'Sign Up',
 				showCloseButton: true,
-				headerTextStyle: {fontWeight: "bold", fontSize: "x-large"},
-				headerStyle: {marginTop: 5, marginBottom: 5},
-				errorMessageStyle: {color: 'green'},
+				headerTextStyle: { fontWeight: "bold", fontSize: "x-large" },
+				headerStyle: { marginTop: 5, marginBottom: 5 },
+				errorMessageStyle: { color: 'green' },
 				options: [{
 					name: 'No Thanks!',
 					type: 'cancel',
-					style: {background: 'lightcoral'}
+					style: { background: 'lightcoral' }
 				}, {
 					name: 'Cancel',
 					type: 'cancel',
 				}, {
 					name: 'Confirm',
 					type: 'confirm',
-					style: {background: 'lightgreen'}
+					style: { background: 'lightgreen' }
 				}],
 				inputs: [
 					{
@@ -221,11 +225,11 @@ const AlertConfigurator = () => {
 						inputType: 'text',
 						name: 'lname',
 						label: 'Last Name',
-						validation: {required: {value: true, message: 'Value is required'}}
+						validation: { required: { value: true, message: 'Value is required' } }
 					},
-					{inputType: 'text', name: 'address', label: 'Address', validation: {required: {value: true}}},
-					{inputType: 'text', name: 'zip', label: 'Zip', validation: {required: {value: true}}},
-					{inputType: 'number', name: 'age', label: 'Age', validation: {min: {value: 5}}},
+					{ inputType: 'text', name: 'address', label: 'Address', validation: { required: { value: true } } },
+					{ inputType: 'text', name: 'zip', label: 'Zip', validation: { required: { value: true } } },
+					{ inputType: 'number', name: 'age', label: 'Age', validation: { min: { value: 5 } } },
 					{
 						inputType: 'image',
 						name: 'avatar',
@@ -248,7 +252,7 @@ const AlertConfigurator = () => {
 						}
 					}],
 				onConfirm: (response) => {
-					showAlert({title: 'Result', text: JSON.stringify(response)});
+					showAlert({ title: 'Result', text: JSON.stringify(response) });
 				}
 			})}>
 				Input Dialog With Multiple Input Fields
@@ -256,27 +260,27 @@ const AlertConfigurator = () => {
 
 			<div className={'example-button'} style={buttonStyles} onClick={() => showInputDialog({
 				title: 'Title',
-				inputs: [{inputType: 'text', name: 'test'}],
+				inputs: [{ inputType: 'text', name: 'test' }],
 				onConfirm: (response) => {
-					showAlert({title: 'Result', text: JSON.stringify(response)});
+					showAlert({ title: 'Result', text: JSON.stringify(response) });
 				}
 			})}>Input Dialog With Text Field
 			</div>
 
 			<div className={'example-button'} style={buttonStyles} onClick={() => showInputDialog({
 				title: 'Title',
-				inputs: [{inputType: 'date', name: 'test'}],
+				inputs: [{ inputType: 'date', name: 'test' }],
 				onConfirm: (response) => {
-					showAlert({title: 'Result', text: JSON.stringify(response)});
+					showAlert({ title: 'Result', text: JSON.stringify(response) });
 				}
 			})}>Input Dialog With Date
 			</div>
 
 			<div className={'example-button'} style={buttonStyles} onClick={() => showInputDialog({
 				title: 'Title',
-				input: {inputType: 'image', name: 'myimage'},
+				input: { inputType: 'image', name: 'myimage' },
 				onConfirm: (response) => {
-					showAlert({title: 'Result', text: JSON.stringify(response)});
+					showAlert({ title: 'Result', text: JSON.stringify(response) });
 				}
 			})}>Input Dialog With Date
 			</div>
@@ -287,7 +291,7 @@ const AlertConfigurator = () => {
 export const Setup = () => {
 	return (
 		<PopupProvider>
-			<App/>
+			<App />
 		</PopupProvider>
 	)
 }

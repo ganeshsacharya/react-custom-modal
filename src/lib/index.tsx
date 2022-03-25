@@ -3,7 +3,7 @@ import React, {
 	useContext,
 	useReducer
 } from "react";
-import {ModalRoot} from "./component";
+import { ModalRoot } from "./component";
 import Dialog from "./Dialog";
 
 export enum AnimationType {
@@ -80,6 +80,8 @@ interface OptionDialogOptions {
 	type?: DialogType;
 	bodyComponent?: JSX.Element;
 	allowOutsideClick?: boolean;
+	allowCloseOnEscKey?: boolean;
+	customIcon?: () => JSX.Element
 }
 
 export interface InputProps {
@@ -121,6 +123,8 @@ interface InputDialogOptions {
 	title?: string;
 	type?: DialogType;
 	allowOutsideClick?: boolean;
+	allowCloseOnEscKey?: boolean;
+	customIcon?: () => JSX.Element;
 }
 
 interface AlertOptions {
@@ -138,6 +142,8 @@ interface AlertOptions {
 	type?: DialogType;
 	bodyComponent?: JSX.Element;
 	allowOutsideClick?: boolean;
+	allowCloseOnEscKey?: boolean;
+	customIcon?: () => JSX.Element;
 }
 
 export interface ToastOptions {
@@ -151,6 +157,7 @@ export interface ToastOptions {
 	showCloseButton?: boolean;
 	showProgress?: boolean;
 	progressColor?: string;
+	customIcon?: () => JSX.Element;
 }
 
 export enum ToastPosition {
@@ -170,6 +177,8 @@ export interface ModalOptions {
 	animationType?: AnimationType,
 	outAnimationType?: OutAnimationType,
 	timeoutDuration?: number;
+	allowOutsideClick?: boolean;
+	allowCloseOnEscKey?: boolean;
 }
 
 interface PopupContext {
@@ -204,7 +213,7 @@ let ExportedPopupActions: Omit<PopupContext, 'componentProps' | 'component' | 'c
 
 const ModalContext = createContext<PopupContext>(DefaultPopupActions);
 
-const {Provider, Consumer: ModalConsumer} = ModalContext;
+const { Provider, Consumer: ModalConsumer } = ModalContext;
 
 const reducer = (state: any, {
 	type,
@@ -216,20 +225,20 @@ const reducer = (state: any, {
 }: { type: 'openModal' | 'hideModal' | 'showToast' | 'hideToast', componentJSX?: JSX.Element, component?: any, componentProps?: any, toast?: IToast, id?: string }) => {
 	switch (type) {
 		case "openModal":
-			return {...state, component, componentProps, componentJSX};
+			return { ...state, component, componentProps, componentJSX };
 		case "hideModal":
-			return {...state, component: null, modalProps: {}, componentJSX: null};
+			return { ...state, component: null, modalProps: {}, componentJSX: null };
 		case "showToast":
-			return {...state, toasts: [...state.toasts, toast], componentProps};
+			return { ...state, toasts: [...state.toasts, toast], componentProps };
 		case "hideToast":
 			const index = state.toasts.findIndex((t: { id: string | undefined; }) => t.id === id);
-			return {...state, toasts: [...state.toasts.slice(0, index), ...state.toasts.slice(index + 1)]};
+			return { ...state, toasts: [...state.toasts.slice(0, index), ...state.toasts.slice(index + 1)] };
 		default:
 			throw new Error("Unspecified reducer action");
 	}
 };
 
-const PopupProvider = ({children}: { children: any }) => {
+const PopupProvider = ({ children }: { children: any }) => {
 
 	const initialState: PopupContext = {
 		componentJSX: undefined,
@@ -237,20 +246,20 @@ const PopupProvider = ({children}: { children: any }) => {
 		componentProps: {},
 		toasts: [],
 		showModal: (componentJSX: JSX.Element, options?: ModalOptions) => {
-			dispatch({type: "openModal", componentJSX, componentProps: {...options}});
+			dispatch({ type: "openModal", componentJSX, componentProps: { ...options } });
 		},
 		hideModal: () => {
-			dispatch({type: "hideModal"});
+			dispatch({ type: "hideModal" });
 		},
 		showAlert: (options: AlertOptions) => {
 			dispatch({
-					type: 'openModal',
-					component: Dialog, componentProps: {isAlert: true, isInputDialog: false, ...options}
-				}
+				type: 'openModal',
+				component: Dialog, componentProps: { isAlert: true, isInputDialog: false, ...options }
+			}
 			)
 		},
 		hideAlert: () => {
-			dispatch({type: "hideModal"})
+			dispatch({ type: "hideModal" })
 		},
 		showOptionDialog: (options: OptionDialogOptions) => {
 			dispatch({
@@ -282,7 +291,7 @@ const PopupProvider = ({children}: { children: any }) => {
 					position: options.position || DefaultToastPosition,
 					id: Math.random().toString(36).substring(7)
 				},
-				componentProps: {...options}
+				componentProps: { ...options }
 			})
 		},
 		hideToast: (toastId?: string) => {
@@ -299,7 +308,7 @@ const PopupProvider = ({children}: { children: any }) => {
 	return (
 		<div>
 			<Provider value={state}>
-				<ModalRoot/>
+				<ModalRoot />
 				{children}
 			</Provider>
 		</div>
@@ -308,4 +317,4 @@ const PopupProvider = ({children}: { children: any }) => {
 
 const usePopup = () => useContext(ModalContext);
 
-export {ModalConsumer, PopupProvider, usePopup, ExportedPopupActions as PopupActions};
+export { ModalConsumer, PopupProvider, usePopup, ExportedPopupActions as PopupActions };

@@ -1,11 +1,11 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import {DialogType, InputProps, OptionDialogButton} from "./index";
+import { DialogType, InputProps, OptionDialogButton } from "./index";
 import Header from "./Header";
 import Footer from "./Footer";
 import Input from "./Input";
 import ImageInput from "./ImageInput";
-import {InputValidation, ValidationResult} from "./Validation";
+import { InputValidation, ValidationResult } from "./Validation";
 
 // @ts-ignore
 Date.prototype.toDateInputValue = function () {
@@ -16,50 +16,29 @@ Date.prototype.toDateInputValue = function () {
 
 interface DialogProps {
 	title: string,
-
 	text: string,
-
 	type: DialogType,
-
 	hideModal: () => {},
-
 	options: Array<OptionDialogButton>,
-
 	onConfirm: (result?: { [key: string]: any }) => {},
-
 	onCancel: (result?: { [key: string]: any }) => {},
-
 	isAlert: boolean,
-
 	isInput: boolean,
-
 	confirmText: string,
-
 	cancelText: string,
-
 	showCloseButton: boolean,
-
 	inputs: Array<InputProps>,
-
 	onDismissed: (result?: { [key: string]: any }) => {},
-
 	onOpened: (result?: { [key: string]: any }) => {},
-
 	input: InputProps,
-
 	headerTextStyle?: React.CSSProperties;
-
 	errorMessageStyle?: React.CSSProperties;
-
 	textStyle?: React.CSSProperties;
-
 	containerStyle?: React.CSSProperties;
-
 	headerStyle?: React.CSSProperties;
-
 	footerStyle?: React.CSSProperties;
-
 	bodyComponent?: JSX.Element;
+	customIcon?: () => JSX.Element;
 }
 
 
@@ -87,7 +66,8 @@ const Dialog = (props: DialogProps) => {
 		footerStyle,
 		bodyComponent,
 		errorMessageStyle,
-		options
+		options,
+		customIcon
 	} = props;
 
 	const getDefaultValues = () => {
@@ -151,7 +131,7 @@ const Dialog = (props: DialogProps) => {
 		}
 
 		if (!result.success) {
-			return {[input.name]: result.message!};
+			return { [input.name]: result.message! };
 		}
 
 		return null;
@@ -261,24 +241,24 @@ const Dialog = (props: DialogProps) => {
 	}
 
 	return (
-		<div className={'react-custom-dialog-wrapper'} style={{...containerStyle}}>
-			<Header headerStyle={headerStyle} headerTextStyle={headerTextStyle} showCloseButton={showCloseButton}
-			        type={type}
-			        hideModal={hideModal} title={title}/>
+		<div className={'react-custom-dialog-wrapper'} style={{ ...containerStyle }}>
+			<Header customIcon={customIcon} headerStyle={headerStyle} headerTextStyle={headerTextStyle} showCloseButton={showCloseButton}
+				type={type}
+				hideModal={hideModal} title={title} />
 			{bodyComponent || (
 				<>
 					{text && text !== "" ?
-						<div className={'react-custom-body-text'} style={{...textStyle}}>{text}</div> : null}
+						<div className={'react-custom-body-text'} style={{ ...textStyle }}>{text}</div> : null}
 					{isInput && (
 						<div className={'react-custom-inputs-container'}>
 							<>
 								{inputsToRender.map((item, index) =>
 									<div key={`input${index}`} className={'react-custom-input-container'}>
 										{item.inputType !== 'image' ? (
-												<Input errorMessageStyle={errorMessageStyle} error={errorValues[item.name]} item={item} setInputValues={setInputValues}
-												       inputValues={inputValues}/>) :
+											<Input errorMessageStyle={errorMessageStyle} error={errorValues[item.name]} item={item} setInputValues={setInputValues}
+												inputValues={inputValues} />) :
 											<ImageInput errorMessageStyle={errorMessageStyle} error={errorValues[item.name]} item={item} setInputValues={setInputValues}
-											            inputValues={inputValues}/>}
+												inputValues={inputValues} />}
 									</div>
 								)}
 							</>
@@ -287,7 +267,7 @@ const Dialog = (props: DialogProps) => {
 				</>
 			)
 			}
-			<Footer footerStyle={footerStyle} optionsToRender={optionsToRender}/>
+			<Footer footerStyle={footerStyle} optionsToRender={optionsToRender} />
 		</div>
 	);
 };

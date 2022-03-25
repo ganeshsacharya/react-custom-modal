@@ -1,4 +1,4 @@
-import React, {createElement, useCallback, useEffect, useRef, useState} from 'react';
+import React, { createElement, useCallback, useEffect, useRef, useState } from 'react';
 
 interface IProps {
 	hideModal: () => void;
@@ -7,22 +7,22 @@ interface IProps {
 	componentProps: React.ComponentProps<any>
 }
 
-export default function Modal({hideModal, Component, ComponentJSX, componentProps}: IProps) {
+export default function Modal({ hideModal, Component, ComponentJSX, componentProps }: IProps) {
 
 	const [ModalToRender, setModalToRender] = useState<JSX.Element | undefined>(undefined);
 
-	const [animation, setAnimation] = useState<{ in: string, out: string }>({in: '', out: ''});
+	const [animation, setAnimation] = useState<{ in: string, out: string }>({ in: '', out: '' });
 
-	const {animationType, outAnimationType, allowOutsideClick = true} = componentProps;
+	const { animationType, outAnimationType, allowOutsideClick = true, allowCloseOnEscKey = true } = componentProps;
 
 	let timeout = useRef<ReturnType<typeof setTimeout> | null>();
 
 	const hideMe = useCallback(() => {
-		setAnimation({out: `animate__animated animate__${outAnimationType} animate__faster`, in: ''})
+		setAnimation({ out: `animate__animated animate__${outAnimationType} animate__faster`, in: '' })
 	}, [outAnimationType]);
 
 	const showMe = useCallback(() => {
-		setAnimation({out: '', in: `animate__animated animate__${animationType} animate__faster`})
+		setAnimation({ out: '', in: `animate__animated animate__${animationType} animate__faster` })
 	}, [animationType]);
 
 	useEffect(() => {
@@ -60,13 +60,29 @@ export default function Modal({hideModal, Component, ComponentJSX, componentProp
 
 	}, [animation])
 
+	useEffect(() => {
+		const listenForEsc = ((evt: KeyboardEvent) => {
+			if (['Esc', 'Escape'].indexOf(evt.key) !== -1) {
+				hideModal();
+			}
+		});
+
+		if (allowCloseOnEscKey && ModalToRender) {
+			window.addEventListener('keydown', listenForEsc);
+		}
+
+		return () => {
+			window.removeEventListener('keydown', listenForEsc);
+		}
+	}, [ModalToRender])
+
 	if (!ModalToRender)
 		return null;
 
 	return (
 		<ModalWrapper>
 			<ModalBackdrop onClick={allowOutsideClick ? hideModal : () => {
-			}}/>
+			}} />
 			<div className={`${animation.in || animation.out}`}>
 				{ModalToRender}
 			</div>
@@ -75,7 +91,7 @@ export default function Modal({hideModal, Component, ComponentJSX, componentProp
 
 }
 
-const ModalBackdrop = ({onClick}: { onClick: () => void }) => {
+const ModalBackdrop = ({ onClick }: { onClick: () => void }) => {
 	useEffect(() => {
 		document.body.classList.add("react-custom-modal-open");
 
@@ -93,6 +109,6 @@ const ModalBackdrop = ({onClick}: { onClick: () => void }) => {
 	);
 };
 
-const ModalWrapper = ({children}: { children: any }) => (
+const ModalWrapper = ({ children }: { children: any }) => (
 	<div className="react-custom-modal-wrapper">{children}</div>
 );
