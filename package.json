@@ -19,7 +19,7 @@
     "url": "https://github.com/Rafaa17/react-custom-modal"
   },
   "scripts": {
-    "test": "jest --watch",
+    "test": "jest --watchAll",
     "build-demo": "rm -rf build build-demo && react-scripts build && mv build build-demo",
     "deploy-demo": "gh-pages -d build-demo",
     "build": "rm -rf build && rollup -c",
