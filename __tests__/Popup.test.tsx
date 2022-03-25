@@ -139,8 +139,6 @@ describe('should successfully show and close dialogs', () => {
 describe('should successfully show and close toasts', () => {
 
     it('should successfully show and close toast', async () => {
-        jest.useRealTimers();
-
         MainComponent = () => {
             const { showToast } = usePopup();
 

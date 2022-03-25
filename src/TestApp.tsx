@@ -113,8 +113,6 @@ const App = () => {
 	)
 }
 
-const MyDangerIcon = () => <div style={{ height: 30, width: 30, borderRadius: 15, background: 'white' }}></div>;
-
 const AlertConfigurator = () => {
 
 	const { showAlert, showOptionDialog, showInputDialog, showToast } = usePopup();
@@ -127,8 +125,7 @@ const AlertConfigurator = () => {
 				text: 'Text',
 				title: 'Title',
 				animationType: AnimationType.FADE_IN,
-				outAnimationType: OutAnimationType.FADE_OUT,
-				customIcon: MyDangerIcon
+				outAnimationType: OutAnimationType.FADE_OUT
 			})}>Danger Alert
 			</div>
 			<div className={'example-button'} style={buttonStyles} onClick={() => showAlert({
